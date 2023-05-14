@@ -369,15 +369,6 @@ GROUP BY s.customer_id, m.product_name
 ORDER BY customer_id ASC 
 ``` 
 
---SELECT
---	s.customer_id ,
---	m.product_name ,
---	RANK () OVER ( 
---		ORDER BY m.product_name  
---	) ValRank
---FROM sales s 
---LEFT JOIN menu m USING (product_id)
-
 
 ```sql
 CREATE TEMPORARY TABLE ranking_1 AS
@@ -392,18 +383,6 @@ FROM sales s
 LEFT JOIN menu m USING (product_id)
 WHERE (customer_id = "A" AND order_date >= "2021-01-07") OR  (customer_id = "B" AND order_date >= "2021-01-11") OR (customer_id = "C")
 ``` 
-
---select *from sales s 
---SELECT 
---	s.customer_id,
---	m.product_name, 
---	COUNT(product_id) AS most_purchased_item
---FROM sales s 
---LEFT JOIN menu m USING (product_id)
---WHERE 
---GROUP BY s.customer_id, m.product_name 
---ORDER BY most_purchased_item DESC 
-
 
 
 ```sql
