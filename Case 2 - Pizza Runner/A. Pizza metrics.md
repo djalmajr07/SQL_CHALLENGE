@@ -161,7 +161,7 @@ ORDER BY 1;
 ``` 
 	
 #### Result set:
-![image](https://user-images.githubusercontent.com/77529445/164611355-1e9338d0-0523-42f6-8648-079a394387ff.png)
+![image](https://github.com/djalmajr07/SQL_CHALLENGE/assets/85264359/297dd42f-f54a-4280-a918-d5155d3045f3)
 
 ***
 
@@ -183,5 +183,5 @@ ORDER BY 2 DESC;
 
 ***
 
-Click [here]() to view the solution of B. Runner and Customer Experience!
+Click [here](https://github.com/djalmajr07/SQL_CHALLENGE/blob/main/Case%202%20-%20Pizza%20Runner/B.%20Runner%20and%20Customer%20Experience.md) to view the solution of B. Runner and Customer Experience!
 
