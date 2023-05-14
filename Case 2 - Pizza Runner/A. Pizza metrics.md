@@ -18,12 +18,14 @@
 ###  1. How many pizzas were ordered?
 
 ```sql
-SELECT count(pizza_id) AS "Total Number Of Pizzas Ordered"
-FROM pizza_runner.customer_orders;
+SELECT 
+    COUNT(order_id) AS total_orders  
+FROM customer_orders co 
+
 ``` 
 	
 #### Result set:
-![image](https://user-images.githubusercontent.com/77529445/164606099-9ea969f1-928e-4bbd-90cd-5211aaed7e89.png)
+![image](https://github.com/djalmajr07/SQL_CHALLENGE/assets/85264359/9153dbcf-d139-4861-9cf2-1d9cfda7b22f)
 
 ***
 
@@ -31,101 +33,84 @@ FROM pizza_runner.customer_orders;
 
 ```sql
 SELECT 
-  COUNT(DISTINCT order_id) AS 'Number Of Unique Orders'
-FROM customer_orders_temp;
+  COUNT(DISTINCT order_id) AS 'total_orders'
+FROM customer_orders;
 ``` 
 	
 #### Result set:
-![image](https://user-images.githubusercontent.com/77529445/164606186-2b5465ef-69df-4fbb-9a2d-cd50afd49c7a.png)
+![image](https://github.com/djalmajr07/SQL_CHALLENGE/assets/85264359/9cd7e698-8c12-4faf-9aaf-fc07330ddca1)
 
 ***
 
 ###  3. How many successful orders were delivered by each runner?
 
 ```sql
-SELECT runner_id,
-       count(order_id) AS 'Number Of Successful Orders'
-FROM pizza_runner.runner_orders_temp
-WHERE cancellation IS NULL
-GROUP BY runner_id;
+SELECT 
+	runner_id, 
+	COUNT(order_id) AS pizza_delivered
+FROM runner_orders ro 
+WHERE distance NOT IN (0)
+GROUP BY runner_id
 ``` 
 	
 #### Result set:
-![image](https://user-images.githubusercontent.com/77529445/164606290-b70ee6e3-ed23-417a-9e86-e8555d9e55c3.png)
+![image](https://github.com/djalmajr07/SQL_CHALLENGE/assets/85264359/9c4d76d2-c36f-4444-bef6-fe5f7b9b7428)
 
 ***
 
 ###  4. How many of each type of pizza was delivered?
 
 ```sql
-
-SELECT pizza_id,
-       pizza_name,
-       count(pizza_id) AS 'Number Of Pizzas Delivered'
-FROM pizza_runner.runner_orders_temp
-INNER JOIN customer_orders_temp USING (order_id)
-INNER JOIN pizza_names USING (pizza_id)
-WHERE cancellation IS NULL
-GROUP BY pizza_id;
+SELECT 
+	COUNT(ro.order_id) AS total_pizzas_delivered,
+	pn.pizza_name
+FROM customer_orders co 
+LEFT JOIN runner_orders ro USING (order_id)
+LEFT JOIN pizza_names pn USING(pizza_id)
+WHERE ro.distance NOT IN (0)
+GROUP BY pn.pizza_name
 ``` 
 	
 #### Result set:
-![image](https://user-images.githubusercontent.com/77529445/164606389-9128a4e0-90e9-467b-a593-c18c62ca007e.png)
+![image](https://github.com/djalmajr07/SQL_CHALLENGE/assets/85264359/58f79cdb-b969-41f7-a146-aeda7bc4cee6)
 
 ***
 
 ###  5. How many Vegetarian and Meatlovers were ordered by each customer?
 
 ```sql
-SELECT customer_id,
-       pizza_name,
-       count(pizza_id) AS 'Number Of Pizzas Ordered'
-FROM customer_orders_temp
-INNER JOIN pizza_names USING (pizza_id)
-GROUP BY customer_id,
-         pizza_id
-ORDER BY customer_id ;
+SELECT 
+	customer_id,
+	pizza_name, 
+	COUNT(pn.pizza_name) AS quantity_by_user
+FROM customer_orders co 
+LEFT JOIN pizza_names pn USING(pizza_id)
+GROUP BY customer_id, pizza_name
 ``` 
 	
 #### Result set:
-![image](https://user-images.githubusercontent.com/77529445/164606480-326c416f-a909-49e8-8bda-8055ee247fd1.png)
-
-- The counts of the Meat lover and Vegetarian pizzas ordered by the customers is not discernible.
-
-```sql
-SELECT customer_id,
-       SUM(CASE
-               WHEN pizza_id = 1 THEN 1
-               ELSE 0
-           END) AS 'Meat lover Pizza Count',
-       SUM(CASE
-               WHEN pizza_id = 2 THEN 1
-               ELSE 0
-           END) AS 'Vegetarian Pizza Count'
-FROM customer_orders_temp
-GROUP BY customer_id
-ORDER BY customer_id;
-``` 
-	
-#### Result set:
-![image](https://user-images.githubusercontent.com/77529445/164606848-8980ebb9-a8e5-4b2b-a612-b86b19f4df08.png)
+![image](https://github.com/djalmajr07/SQL_CHALLENGE/assets/85264359/82461488-71d3-403e-872f-b8eedf726796)
 
 ***
 
 ###  6. What was the maximum number of pizzas delivered in a single order?
 
 ```sql
-SELECT customer_id,
-       order_id,
-       count(order_id) AS pizza_count
-FROM customer_orders_temp
-GROUP BY order_id
-ORDER BY pizza_count DESC
-LIMIT 1;
+SELECT 
+	order_id,
+	COUNT(pizza_id) AS max_quantity_pizza_ordered,
+	order_time
+FROM customer_orders co 
+LEFT JOIN runner_orders ro USING (order_id)
+LEFT JOIN pizza_names pn USING(pizza_id)
+WHERE ro.distance NOT IN (0)
+GROUP BY order_id, order_time
+ORDER BY max_quantity_pizza_ordered DESC
+LIMIT 1
 ``` 
 	
 #### Result set:
-![image](https://user-images.githubusercontent.com/77529445/164608353-a577858f-1d1c-46ed-b1f2-05644b756604.png)
+![image](https://github.com/djalmajr07/SQL_CHALLENGE/assets/85264359/7ebf89a9-504a-4d56-8457-f21f46a8a3ef)
 
 ***
 
@@ -134,48 +119,33 @@ LIMIT 1;
 - no changes -> exclusion and extras are NULL
 
 ```sql
-SELECT customer_id,
-       SUM(CASE
-               WHEN (exclusions IS NOT NULL
-                     OR extras IS NOT NULL) THEN 1
-               ELSE 0
-           END) AS change_in_pizza,
-       SUM(CASE
-               WHEN (exclusions IS NULL
-                     AND extras IS NULL) THEN 1
-               ELSE 0
-           END) AS no_change_in_pizza
-FROM customer_orders_temp
-INNER JOIN runner_orders_temp USING (order_id)
-WHERE cancellation IS NULL
-GROUP BY customer_id
-ORDER BY customer_id;
+SELECT 
+	customer_id,
+	SUM(CASE WHEN (exclusions > 0  OR extras > 0) THEN 1 ELSE 0 END) AS at_least_one_change,
+	SUM(CASE WHEN (exclusions = 0 AND extras = 0) THEN 1 ELSE 0 END) AS no_change
+FROM customer_orders co 
+INNER JOIN runner_orders ro USING (order_id)
+WHERE ro.distance NOT IN (0)
+GROUP BY customer_id;
 ``` 
 
 #### Result set:
-![image](https://user-images.githubusercontent.com/77529445/164609444-9b7453ed-2477-4ce0-b7f7-39768a0ce808.png)
+![image](https://github.com/djalmajr07/SQL_CHALLENGE/assets/85264359/60148375-737b-4205-bdc9-21e7e0da8b3f)
 
 ***
 
 ###  8. How many pizzas were delivered that had both exclusions and extras?
 
 ```sql
-
-SELECT customer_id,
-       SUM(CASE
-               WHEN (exclusions IS NOT NULL
-                     AND extras IS NOT NULL) THEN 1
-               ELSE 0
-           END) AS both_change_in_pizza
-FROM customer_orders_temp
-INNER JOIN runner_orders_temp USING (order_id)
-WHERE cancellation IS NULL
-GROUP BY customer_id
-ORDER BY customer_id;
+SELECT STRFTIME('%Y-%m-%d %H', order_time) as hour,
+       COUNT(*) as max_volume_of_order
+FROM customer_orders co 
+GROUP BY STRFTIME('%Y-%m-%d %H', order_time)
+ORDER BY hour ASC
 ``` 
 	
 #### Result set:
-![image](https://user-images.githubusercontent.com/77529445/164609941-c2a6f1f8-38c2-4e1c-ab64-a9dd557077e5.png)
+![image](https://github.com/djalmajr07/SQL_CHALLENGE/assets/85264359/6104827d-fcab-4077-bbf6-a98903b1840c)
 
 ***
 
@@ -209,7 +179,7 @@ ORDER BY 2 DESC;
 ``` 
 	
 #### Result set:
-![image](https://user-images.githubusercontent.com/77529445/164612599-c3903593-98e1-4fec-8076-9aa14d9601f9.png)
+![image](https://github.com/djalmajr07/SQL_CHALLENGE/assets/85264359/49058e18-c009-4cd7-ab08-4c602eb16908)
 
 ***
 
