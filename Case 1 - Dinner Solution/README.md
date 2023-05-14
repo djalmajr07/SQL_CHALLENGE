@@ -1,4 +1,4 @@
-# :ramen: Case Study #1: Danny's Diner :ramen: 
+# :ramen: Case 1 - Danny's Diner :ramen: 
 <p align="center">
 <img src="https://8weeksqlchallenge.com/images/case-study-designs/1.png" alt="Image" width="450" height="450">
 
