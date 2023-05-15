@@ -1,10 +1,12 @@
 # :pizza: Case 2 - Pizza runner - Bonus Question :pizza:
 
+# :pizza: Case Study #2: Pizza runner - Bonus Question
+
 If Danny wants to expand his range of pizzas - how would this impact the existing data design? Write an INSERT statement to demonstrate what would happen if a new Supreme pizza with all the toppings was added to the Pizza Runner menu?
 
 Supreme pizza has all toppings on it.
 
-![image]()
+![image](https://user-images.githubusercontent.com/77529445/168252509-fa26acf9-5442-439a-869f-d28f4e90b0ac.png)
 
 We'd have to insert data into pizza_names and pizza_recipes tables
 
@@ -14,7 +16,7 @@ We'd have to insert data into pizza_names and pizza_recipes tables
 INSERT INTO pizza_names VALUES(3, 'Supreme');
 SELECT * FROM pizza_names;
 ``` 
-![image]()
+![image](https://github.com/djalmajr07/SQL_CHALLENGE/assets/85264359/c83c792c-b5e8-4b50-9d64-bcd714f170ab)
 
 ```sql
 INSERT INTO pizza_recipes
@@ -24,7 +26,7 @@ VALUES(3, (SELECT GROUP_CONCAT(topping_id SEPARATOR ', ') FROM pizza_toppings));
 ```sql
 SELECT * FROM pizza_recipes;
 ``` 
-![image]()
+![image](https://github.com/djalmajr07/SQL_CHALLENGE/assets/85264359/9f64746b-1222-4640-a2a6-b3a22ee02ff3)
 
 *** 
 
@@ -33,9 +35,8 @@ SELECT *
 FROM pizza_names
 INNER JOIN pizza_recipes USING(pizza_id);
 ``` 
-![image]()
+![image](https://github.com/djalmajr07/SQL_CHALLENGE/assets/85264359/c8ba5c3d-da06-46ea-9eba-55a425789c9d)
 
 ***
 
-Click [here]() to move back to the 8-Week-SQL-Challenge repository!
-
+Click [here](https://github.com/djalmajr07/SQL_CHALLENGE/tree/main) to move back to the 8-Week-SQL-Challenge repository!
