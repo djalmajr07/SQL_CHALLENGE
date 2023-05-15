@@ -28,7 +28,7 @@ Key datasets for this case study
 - **pizza_toppings** : The table contains all of the topping_name values with their corresponding topping_id value
 
 ## Entity Relationship Diagram
-![alt text](jpg)
+![alt text](https://github.com/djalmajr07/SQL_CHALLENGE/blob/main/Case%202%20-%20Pizza%20Runner/table_relation.png)
 
 ## Data Clean
 There are some known data issues with few tables. Data cleaning was performed and saved in temporary tables before attempting the case study.
