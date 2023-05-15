@@ -1,12 +1,10 @@
 # :pizza: Case 2 - Pizza runner - Bonus Question :pizza:
 
-# :pizza: Case Study #2: Pizza runner - Bonus Question
-
 If Danny wants to expand his range of pizzas - how would this impact the existing data design? Write an INSERT statement to demonstrate what would happen if a new Supreme pizza with all the toppings was added to the Pizza Runner menu?
 
 Supreme pizza has all toppings on it.
 
-![image](https://user-images.githubusercontent.com/77529445/168252509-fa26acf9-5442-439a-869f-d28f4e90b0ac.png)
+![image](https://github.com/djalmajr07/SQL_CHALLENGE/assets/85264359/f29d46c5-e1b5-42e2-979f-44ba396647a4)
 
 We'd have to insert data into pizza_names and pizza_recipes tables
 
