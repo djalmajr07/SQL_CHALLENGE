@@ -144,9 +144,96 @@ ORDER BY plan_id;
 
 
 -- 8. How many customers have upgraded to an annual plan in 2020?
+SELECT 
+	COUNT(latest) AS customer_upgrade_in_2020_counter
+FROM (SELECT 
+	plan_id,
+	customer_id,
+	year(start_date) AS year_20,
+	LEAD(plan_id, 1) OVER(PARTITION BY customer_id ORDER BY start_date) AS latest
+FROM subscriptions
+JOIN plans USING (plan_id)
+WHERE year(start_date) = '2020')asd
+WHERE latest = 3
+
+
 -- 9. How many days on average does it take for a customer to an annual plan from the day they join Foodie-Fi?
+
+SELECT
+	ROUND(AVG(DATEDIFF(upg_annual,start_date))) AS average_to_annual_plan
+FROM (SELECT
+	customer_id,
+	plan_id,
+	start_date,
+	LEAD(start_date,1) OVER(PARTITION BY customer_id ORDER BY plan_id) AS upg_annual
+FROM subscriptions s 
+INNER JOIN plans p USING(plan_id)
+WHERE plan_id = 0 OR plan_id = 3) asd
+WHERE upg_annual IS NOT NULL
+
+
+
+
 -- 10. Can you further breakdown this average value into 30 day periods (i.e. 0-30 days, 31-60 days etc)
+
+
+create temporary table t2 as (SELECT
+	DATEDIFF(upg_annual,start_date) AS date_diff
+FROM (SELECT
+	customer_id,
+	plan_id,
+	start_date,
+	LEAD(start_date,1) OVER(PARTITION BY customer_id ORDER BY plan_id) AS upg_annual
+FROM subscriptions s 
+INNER JOIN plans p USING(plan_id)
+WHERE plan_id = 0 OR plan_id = 3) asd
+WHERE upg_annual IS NOT NULL)
+
+
+
+select (date_diff) from t2 WHERE date_diff <= 30
+
+SELECT 
+  CASE
+    WHEN date_diff >= 0 AND date_diff <= 30 THEN '0-30'
+    WHEN date_diff >= 31 AND date_diff <= 61 THEN '31-61'
+    WHEN date_diff >= 62 AND date_diff <= 92 THEN '62-92'
+    WHEN date_diff >= 62 AND date_diff <= 92 THEN '93-123'
+    WHEN date_diff >= 124 AND date_diff <= 154 THEN '124-154'
+    WHEN date_diff >= 155 AND date_diff <= 185 THEN '155-185'
+    WHEN date_diff >= 186 AND date_diff <= 216 THEN '186-216'
+    WHEN date_diff >= 217 AND date_diff <= 247 THEN '217-247'
+    WHEN date_diff >= 248 AND date_diff <= 278 THEN '248-278'
+    WHEN date_diff >= 279 AND date_diff <= 309 THEN '279-309'
+    WHEN date_diff >= 310 AND date_diff <= 340 THEN '310-340'
+    ELSE 'MAX_RANGE'
+  END AS range_by_30,
+  ROUND(AVG(date_diff)) AS range_mean
+FROM t2
+GROUP BY range_by_30;
+
+
+-- SELECT
+--   CONCAT((FLOOR(date_diff / 31) * 31), '-', (FLOOR(date_diff / 31) * 31 + 30)) AS range_by_30,
+--   ROUND(AVG(date_diff)) AS range_mean
+-- FROM t2
+-- GROUP BY range_by_30;
+
+
 -- 11. How many customers downgraded from a pro monthly to a basic monthly plan in 2020?
+
+create temporary table next_plan_cte AS
+  (SELECT *,
+          lead(plan_id, 1) over(PARTITION BY customer_id
+                                ORDER BY start_date) AS next_plan
+   FROM subscriptions)
+   
+SELECT count(*) AS downgrade_count
+FROM next_plan_cte
+WHERE plan_id=2
+  AND next_plan=1
+  AND year(start_date);
+
 
 
 SELECT
