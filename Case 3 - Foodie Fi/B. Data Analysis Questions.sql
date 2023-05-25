@@ -235,6 +235,193 @@ WHERE plan_id=2
   AND year(start_date);
 
 
+ 
+
+ 
+ 
+ 
+ 
+ 
+ 
+SELECT customer_id, plan_id, plan_name, start_date, price,
+   LEAD(start_date, 1) OVER(PARTITION BY customer_id 
+       ORDER BY start_date, plan_id) cutoff_date
+FROM subscriptions
+JOIN plans
+USING (plan_id)
+WHERE start_date BETWEEN '2020-01-01' AND '2020-12-31'
+AND plan_name NOT IN('trial', 'churn')
+ 
+ 
+WITH cte AS (
+ SELECT customer_id, plan_id, plan_name, start_date, 
+   LEAD(start_date, 1) OVER(PARTITION BY customer_id 
+       ORDER BY start_date, plan_id) cutoff_date,
+   price as amount
+  FROM subscriptions
+  JOIN plans
+  USING (plan_id)
+WHERE start_date BETWEEN '2020-01-01' AND '2020-12-31'
+AND plan_name NOT IN('trial', 'churn')
+),
+cte1 AS(
+ SELECT customer_id, plan_id, plan_name, start_date, 
+   COALESCE(cutoff_date, '2020-12-31') cutoff_date, amount
+ FROM cte
+)
+SELECT * FROM cte1
+ 
+ 
+
+
+
+WITH RECURSIVE cte AS (
+ SELECT customer_id, plan_id, plan_name, start_date, 
+   LEAD(start_date, 1) OVER(PARTITION BY customer_id 
+       ORDER BY start_date, plan_id) cutoff_date,
+   price as amount
+  FROM subscriptions
+  JOIN plans
+  USING (plan_id)
+  WHERE start_date BETWEEN '2020-01-01' AND '2020-12-31'
+   AND plan_name NOT IN('trial', 'churn')
+),
+cte1 AS(
+ SELECT customer_id, plan_id, plan_name, start_date, 
+   COALESCE(cutoff_date, '2020-12-31') cutoff_date, amount
+ FROM cte
+),
+cte2 AS (
+  SELECT customer_id, plan_id, plan_name, start_date, cutoff_date, amount FROM cte1
+
+UNION ALL
+
+SELECT customer_id, plan_id, plan_name, 
+  DATE_ADD(start_date, INTERVAL 1 MONTH) AS start_date, 
+  cutoff_date, amount FROM cte2
+WHERE cutoff_date > DATE_ADD(start_date, INTERVAL 1 MONTH)
+  AND plan_name <> 'pro annual'
+)
+SELECT * FROM cte2
+ORDER BY customer_id, start_date;
+ 
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-- //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+CREATE TABLE payments_2020 AS
+WITH RECURSIVE cte AS (
+ SELECT customer_id, plan_id, plan_name, start_date, 
+   LEAD(start_date, 1) OVER(PARTITION BY customer_id 
+       ORDER BY start_date, plan_id) cutoff_date,
+   price as amount
+  FROM subscriptions
+  JOIN plans
+  USING (plan_id)
+  WHERE start_date BETWEEN '2020-01-01' AND '2020-12-31'
+   AND plan_name NOT IN('trial', 'churn')
+),
+cte1 AS(
+ SELECT customer_id, plan_id, plan_name, start_date, 
+   COALESCE(cutoff_date, '2020-12-31') cutoff_date, amount
+ FROM cte
+),
+cte2 AS (
+  SELECT customer_id, plan_id, plan_name, start_date, cutoff_date, amount FROM cte1
+
+UNION ALL
+
+SELECT customer_id, plan_id, plan_name, 
+  DATE_ADD(start_date, INTERVAL 1 MONTH) AS start_date, 
+  cutoff_date, amount FROM cte2
+WHERE cutoff_date > DATE_ADD(start_date, INTERVAL 1 MONTH)
+  AND plan_name <> 'pro annual'
+),
+cte3 AS (
+ SELECT *, 
+   LAG(plan_id, 1) OVER(PARTITION BY customer_id ORDER BY start_date) 
+    AS last_payment_plan,
+   LAG(amount, 1) OVER(PARTITION BY customer_id ORDER BY start_date) 
+    AS last_amount_paid,
+   RANK() OVER(PARTITION BY customer_id ORDER BY start_date) AS payment_order
+ FROM cte2
+ ORDER BY customer_id, start_date
+)
+SELECT customer_id, plan_id, plan_name, start_date AS payment_date, 
+ (CASE 
+   WHEN plan_id IN (2, 3) AND last_payment_plan = 1 
+    THEN amount - last_amount_paid
+   ELSE amount
+ END) AS amount, payment_order
+FROM cte3;
+ 
+
+SELECT * FROM payments_2020;
+
+
+
+WITH RECURSIVE cte AS (
+  SELECT
+    customer_id,
+    plan_id,
+    plan_name,
+    start_date,
+    LAG(start_date, 1, '2020-12-31') OVER (PARTITION BY customer_id ORDER BY start_date) AS cutoff_date,
+    price AS amount
+  FROM subscriptions
+  JOIN plans USING (plan_id)
+  WHERE start_date BETWEEN '2020-01-01' AND '2020-12-31'
+    AND plan_name NOT IN ('trial', 'churn')
+),
+cte2 AS (
+  SELECT customer_id, plan_id, plan_name, start_date, cutoff_date, amount
+  FROM cte
+  WHERE plan_name = 'pro annual'
+  
+  UNION ALL
+  
+  SELECT
+    customer_id,
+    plan_id,
+    plan_name,
+    DATE_ADD(start_date, INTERVAL 1 MONTH),
+    cutoff_date,
+    amount
+  FROM cte2
+  WHERE cutoff_date > DATE_ADD(start_date, INTERVAL 1 MONTH)
+    AND plan_name <> 'pro annual'
+)
+SELECT * FROM cte2
+ORDER BY customer_id, start_date;
+
+
+
+
+
+
 
 SELECT
 	*
