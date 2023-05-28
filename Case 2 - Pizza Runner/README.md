@@ -62,7 +62,7 @@ of ‘loyalty program’. Danny team can request all customer to fill up survey 
 specially from customer C.
   
 ## Conclusion
-I used various SQL functions to solved the questions : Aggregate functions( COUNT,
+I used various SQL functions to solve the questions : Aggregate functions( COUNT,
 SUM), Windows functions (ROW_NUMBER, RANK,DENSE_RANK), filtering and sorting functions
 (WHERE, ORDER BY, GROUP BY), date functions (DATEADD) and used CTE with complex sub queries, ETC.
 MYSQL inside DBeaver was used for solving this case study.
