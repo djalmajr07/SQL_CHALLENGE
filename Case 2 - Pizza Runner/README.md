@@ -47,9 +47,9 @@ There are some known data issues with few tables. Data cleaning was performed an
 Click [here](data clean) to view the data wrangling peformed.
 
 ## Case Study Solutions
-- [A. Pizza Metrics]()
-- [B. Runner and Customer Experience]()
-- [C. Ingredient Optimisation]()
-- [D. Pricing and Ratings]()
-- [E. Bonus Questions]()
+- [A. Pizza Metrics](https://github.com/djalmajr07/SQL_CHALLENGE/blob/main/Case%202%20-%20Pizza%20Runner/A.%20Pizza%20metrics.md)
+- [B. Runner and Customer Experience](https://github.com/djalmajr07/SQL_CHALLENGE/blob/main/Case%202%20-%20Pizza%20Runner/B.%20Runner%20and%20Customer%20Experience.md)
+- [C. Ingredient Optimisation](https://github.com/djalmajr07/SQL_CHALLENGE/blob/main/Case%202%20-%20Pizza%20Runner/C.%20Ingredient%20Optimisation.md)
+- [D. Pricing and Ratings](https://github.com/djalmajr07/SQL_CHALLENGE/blob/main/Case%202%20-%20Pizza%20Runner/D.%20Pricing%20and%20Ratings.md)
+- [E. Bonus Questions](https://github.com/djalmajr07/SQL_CHALLENGE/blob/main/Case%202%20-%20Pizza%20Runner/E.%20Bonus%20Questions.md)
 
