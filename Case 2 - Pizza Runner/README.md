@@ -46,6 +46,28 @@ There are some known data issues with few tables. Data cleaning was performed an
 
 Click [here](https://github.com/djalmajr07/SQL_CHALLENGE/blob/main/Case%202%20-%20Pizza%20Runner/0.%20Data%20Wrangling.md) to view the data wrangling peformed.
 
+## Interesting Insights
+- Customer A spends most followed b y customer B
+- Customer A visited ‘Danny’s Diner’ 6 times which is same as customer B but customer C
+visited only 3 times
+- ‘Ramen’ is the most popular item out of three ands was purchased 8 times which is 53% of
+whole.
+- Ramen is favourite item for customer A and C whereas B likes all three items equally as per
+the data.
+- Customer A is the first ‘Loyal Customer’ followed by B
+- Even though Ramen is popular but before joining ‘Customer loyalty’ program A ordered ‘sushi’
+and ‘curry’ and B ordered ‘sushi’.
+- Customer C has purchased the lowest out of all three customer and also, he is not a member
+of ‘loyalty program’. Danny team can request all customer to fill up survey to get feedback
+specially from customer C.
+  
+## Conclusion
+I used various SQL functions to solved the questions : Aggregate functions( COUNT,
+SUM), Windows functions (ROW_NUMBER, RANK,DENSE_RANK), filtering and sorting functions
+(WHERE, ORDER BY, GROUP BY), date functions (DATEADD) and used CTE with complex sub queries, ETC.
+MYSQL inside DBeaver was used for solving this case study.
+
+
 ## Case Study Solutions
 - [A. Pizza Metrics](https://github.com/djalmajr07/SQL_CHALLENGE/blob/main/Case%202%20-%20Pizza%20Runner/A.%20Pizza%20metrics.md)
 - [B. Runner and Customer Experience](https://github.com/djalmajr07/SQL_CHALLENGE/blob/main/Case%202%20-%20Pizza%20Runner/B.%20Runner%20and%20Customer%20Experience.md)
