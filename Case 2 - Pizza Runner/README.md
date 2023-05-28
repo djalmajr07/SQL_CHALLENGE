@@ -44,7 +44,7 @@ There are some known data issues with few tables. Data cleaning was performed an
 - In the duration column, there are null values. The 'minutes', 'mins' 'minute' must be stripped
 - In the cancellation column, there are blank spaces and null values.
 
-Click [here](data clean) to view the data wrangling peformed.
+Click [here](https://github.com/djalmajr07/SQL_CHALLENGE/blob/main/Case%202%20-%20Pizza%20Runner/0.%20Data%20Wrangling.md) to view the data wrangling peformed.
 
 ## Case Study Solutions
 - [A. Pizza Metrics](https://github.com/djalmajr07/SQL_CHALLENGE/blob/main/Case%202%20-%20Pizza%20Runner/A.%20Pizza%20metrics.md)
