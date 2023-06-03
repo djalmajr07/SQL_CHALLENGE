@@ -9,6 +9,7 @@ View the case study [here](https://8weeksqlchallenge.com/case-study-1/)
   - [Problem Statement](#problem-statement)
   - [Datasets used](#datasets-used)
   - [Entity Relationship Diagram](#entity-relationship-diagram)
+  - [Dashboard](#dashboard)
   - [Case Study Questions](#case-study-questions)
   
 ## Introduction
@@ -29,6 +30,13 @@ Three key datasets for this case study
 ## Entity Relationship Diagram
 ![alt text](https://github.com/djalmajr07/SQL_CHALLENGE/blob/main/Case%201%20-%20Dinner%20Solution/tables_relationship.png)
 
+ ## Dashboard
+  
+  ![image](https://github.com/djalmajr07/SQL_CHALLENGE/assets/85264359/35142769-b2dc-470a-9341-1bd132679265)
+
+
+  
+  
 ## Case Study Questions
 1. What is the total amount each customer spent at the restaurant?
 2. How many days has each customer visited the restaurant?
