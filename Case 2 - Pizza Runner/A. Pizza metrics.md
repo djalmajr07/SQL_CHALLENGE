@@ -145,7 +145,7 @@ ORDER BY hour ASC
 ``` 
 	
 #### Result set:
-![image](https://github.com/djalmajr07/SQL_CHALLENGE/assets/85264359/6104827d-fcab-4077-bbf6-a98903b1840c)
+![image](https://github.com/djalmajr07/SQL_CHALLENGE/assets/85264359/1af68013-464b-4c36-8078-7c1841cc264a)
 
 ***
 
