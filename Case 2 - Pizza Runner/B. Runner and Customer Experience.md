@@ -78,7 +78,7 @@ GROUP BY order_id
 
 ***
 
-###  4. What was the average distance travelled for each customer?
+###  4. What was the average distance traveled for each customer?
 
 ```sql
 SELECT 
