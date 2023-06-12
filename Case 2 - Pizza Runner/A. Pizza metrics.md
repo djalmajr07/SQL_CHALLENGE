@@ -137,11 +137,14 @@ GROUP BY customer_id;
 ###  8. How many pizzas were delivered that had both exclusions and extras?
 
 ```sql
-SELECT STRFTIME('%Y-%m-%d %H', order_time) as hour,
-       COUNT(*) as max_volume_of_order
+SELECT 
+	customer_id,
+	SUM(CASE WHEN (exclusions > 0 AND extras > 0) THEN 1 ELSE 0 END) AS order_changed
 FROM customer_orders co 
-GROUP BY STRFTIME('%Y-%m-%d %H', order_time)
-ORDER BY hour ASC
+INNER JOIN runner_orders ro USING (order_id)
+WHERE ro.distance NOT IN (0)
+GROUP BY customer_id 
+ORDER BY order_changed DESC 
 ``` 
 	
 #### Result set:
